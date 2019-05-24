@@ -1,0 +1,50 @@
+var gFunction= function(x,y,z){
+    var g=Math.exp(x)+Math.sin(y);
+    return g;
+}
+var fFunction= function(x,y,z){
+    var f=z;
+    return f;
+}
+var rungeKutt = function(h,x,y,z){
+    var k=[],l=[],deltaY=0,deltaZ=0;
+    for(x;x<=1;x+=h){
+        y+=deltaY;
+        z+=deltaZ;
+        k[0]=h*fFunction(x,y,z);
+        l[0]=h*gFunction(x,y,z);
+        k[1]=h*fFunction(x+h/2,y+k[0]/2,z+l[0]/2);
+        l[1]=h*gFunction(x+h/2,y+k[0]/2,z+l[0]/2);
+        k[2]=h*fFunction(x+h/2,y+k[1]/2,z+l[1]/2);
+        l[2]=h*gFunction(x+h/2,y+k[1]/2,z+l[1]/2);
+        k[3]=h*fFunction(x+h,y+k[2],z+l[2]);
+        l[3]=h*gFunction(x+h,y+k[2],z+l[2]);
+        deltaY=(k[0]+2*k[1]+2*k[2]+k[3])/6;
+        deltaZ=(l[0]+2*l[1]+2*l[2]+l[3])/6;
+      //  console.log(y);    
+    }
+    return y;
+}
+var _zSearch =  function(i){
+    z[i]=z[i-1]-(z[i-1]-z[i-2])/(fi[i-1]-fi[i-2])*(fi[i-1]-2);
+}
+var x=0,y=1,z=[],h=0.1;
+var fi=[];
+var epsil=0.001
+z[0]=1;
+fi[0]=rungeKutt(h,x,y,z[0]);
+z[1]=0.8;
+x=0;
+y=1;
+fi[1]=rungeKutt(h,x,y,z[1]);
+for (var i=2;;i++){
+    _zSearch(i);   
+    fi[i]=rungeKutt(h,x,y,z[i]);
+    if (Math.abs(fi[i]-2)<epsil)
+    break;
+}
+var i=0;
+fi.forEach(function(value,number,arrey) {
+    console.log("fi = "+ value,"etta ="+ z[i]);
+    i++;
+});
